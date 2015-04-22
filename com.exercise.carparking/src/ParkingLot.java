@@ -1,7 +1,6 @@
-/**
- * Created by Junaid on 22-04-2015.
- */
-public class ParkingLot {
+import java.util.Observable;
+
+public class ParkingLot extends Observable{
 
     public static final String CAR_OBJECT_IS_NULL = "Car not present";
     private final int PARKING_LOT_FULL = -1;
@@ -23,6 +22,16 @@ public class ParkingLot {
         }
     }
 
+    public void addParkingOwnerAsObserver(ParkingOwner parkingOwner) throws Exception {
+        validateParkingOwner(parkingOwner);
+        addObserver(parkingOwner);
+    }
+
+    private void validateParkingOwner(ParkingOwner parkingOwner) throws Exception {
+        if(parkingOwner == null){
+            throw new Exception("Cannot add parking owner as owner is not present");
+        }
+    }
     public int parkCar(Car car) throws Exception {
         validateCarForNull(car);
         if(isParkingFull){
@@ -30,17 +39,24 @@ public class ParkingLot {
         }
         int parkingSlotIndex = findEmptyParkingSlot();
         parkingSlots[parkingSlotIndex]=true;
-        checkAndSetForFullParkingSpace();
+        checkAndNotifyForFullParkingSpace();
         return parkingSlotIndex;
     }
 
-    private void checkAndSetForFullParkingSpace() throws Exception {
+    private void checkAndNotifyForFullParkingSpace() throws Exception {
         for(int i=0;i<parkingLotSize;i++) {
             if(!parkingSlots[i]) {
                return;
             }
         }
         isParkingFull = true;
+        notifyParkingOwnerForFullParking();
+
+    }
+
+    private void notifyParkingOwnerForFullParking(){
+        setChanged();
+        notifyObservers(true);
     }
 
     private void validateCarForNull(Car car) {
@@ -61,14 +77,35 @@ public class ParkingLot {
 
 
     public boolean retrieveParkedCarForTicket(int parkingTicketNumber) throws Exception {
-        testForInvalidTicketNumber(parkingTicketNumber);
-        return true;
+        checkForInvalidTicketNumber(parkingTicketNumber);
+        if (checkAndNotifyForFreeParkingSlot(parkingTicketNumber)){
+            return true;
+        }
+
+        return false;
 
     }
 
-    private void testForInvalidTicketNumber(int parkingTicketNumber) throws Exception {
+    private boolean checkAndNotifyForFreeParkingSlot(int parkingTicketNumber) {
+        if(parkingSlots[parkingTicketNumber]){
+            parkingSlots[parkingTicketNumber] = false;
+            isParkingFull = false;
+            notifyParkingOwnerForAvailableParking();
+            return true;
+        }
+        return false;
+    }
+
+    private void notifyParkingOwnerForAvailableParking() {
+        setChanged();
+        notifyObservers(false);
+    }
+
+    private void checkForInvalidTicketNumber(int parkingTicketNumber) throws Exception {
         if(parkingTicketNumber < 0  || parkingTicketNumber >= parkingLotSize){
             throw new Exception("Invalid Ticket Number");
         }
     }
+
+
 }

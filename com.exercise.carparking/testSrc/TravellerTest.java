@@ -7,7 +7,8 @@ public class TravellerTest {
     @Test
     public void shouldParkCar() throws Exception {
         Traveller traveller =new Traveller(new Car());
-        String result = traveller.parkCar();
+        ParkingLot parkingLot = new ParkingLot(1);
+        String result = traveller.parkCar(parkingLot);
         assertEquals("Car is Parked", result);
     }
 
@@ -16,7 +17,8 @@ public class TravellerTest {
         String outputException=null;
         try {
             Traveller traveller =new Traveller(null);
-            traveller.parkCar();
+            ParkingLot parkingLot = new ParkingLot(1);
+            traveller.parkCar(parkingLot);
         } catch (Exception e) {
             outputException=e.getMessage();
         }
@@ -28,8 +30,9 @@ public class TravellerTest {
         String outputException=null;
         try {
             Traveller traveller =new Traveller(new Car());
-            traveller.parkCar();
-            traveller.parkCar();
+            ParkingLot parkingLot = new ParkingLot(1);
+            traveller.parkCar(parkingLot);
+            traveller.parkCar(parkingLot);
         } catch (Exception e) {
             outputException=e.getMessage();
         }
@@ -40,8 +43,9 @@ public class TravellerTest {
     @Test
     public void shouldRetrieveCarWhenCarIsParked() throws Exception {
         Traveller traveller =new Traveller(new Car());
-        traveller.parkCar();
-        String successMsg = traveller.retrieveParkedCar();
+        ParkingLot parkingLot = new ParkingLot(1);
+        traveller.parkCar(parkingLot);
+        String successMsg = traveller.retrieveParkedCar(parkingLot);
         assertEquals("Car is unparked", successMsg);
 
     }
@@ -49,7 +53,8 @@ public class TravellerTest {
     @Test
     public void shouldNotRetrieveCarWhenCarIsNotParked() throws Exception {
         Traveller traveller =new Traveller(new Car());
-        String successMsg = traveller.retrieveParkedCar();
+        ParkingLot parkingLot = new ParkingLot(1);
+        String successMsg = traveller.retrieveParkedCar(parkingLot);
         assertEquals("Car is not parked", successMsg);
 
     }
@@ -57,9 +62,10 @@ public class TravellerTest {
     @Test
     public void shouldParkCarAfterRetrievingCar() throws Exception {
         Traveller traveller =new Traveller(new Car());
-        traveller.parkCar();
-        traveller.retrieveParkedCar();
-        String successMsg = traveller.parkCar();
+        ParkingLot parkingLot = new ParkingLot(1);
+        traveller.parkCar(parkingLot);
+        traveller.retrieveParkedCar(parkingLot);
+        String successMsg = traveller.parkCar(parkingLot);
         assertEquals("Car is Parked", successMsg);
 
     }
