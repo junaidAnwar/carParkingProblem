@@ -66,7 +66,40 @@ public class ParkingLotTest {
             exceptionMsg=e.getMessage();
         }
         assertEquals("Parking Lot is full", exceptionMsg);
+    }
 
+    @Test
+    public void shouldNotParkCarAtSameSlotWhenAnotherCarIsAlreadyParked() throws Exception {
+        Car carA = new Car();
+        Car carB = new Car();
+        ParkingLot parkingLot = new ParkingLot(2);
+        int parkingSlotA = parkingLot.parkCar(carA);
+        int parkingSlotB = parkingLot.parkCar(carB);
+        assertNotEquals(parkingSlotA, parkingSlotB);
+    }
+
+    @Test
+    public void shouldRetrieveTheParkedCarForTheAssignedTicket() throws Exception {
+        Car carA = new Car();
+        ParkingLot parkingLot = new ParkingLot(1);
+        int parkingSlotA = parkingLot.parkCar(carA);
+        boolean isCarRetrieved = parkingLot.retrieveParkedCarForTicket(parkingSlotA);
+        assertTrue(isCarRetrieved);
+    }
+
+    @Test
+    public void shouldNotRetrieveTheCarWithInvalidTicket() throws Exception {
+        String exceptionMsg = null;
+        try {
+            ParkingLot parkingLot = new ParkingLot(1);
+            int parkingSlotA = -1;
+            parkingLot.retrieveParkedCarForTicket(parkingSlotA);
+        }
+        catch (Exception e){
+            exceptionMsg=e.getMessage();
+        }
+        assertEquals("Invalid Ticket Number", exceptionMsg);
 
     }
+
 }
