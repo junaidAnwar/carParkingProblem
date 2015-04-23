@@ -1,19 +1,22 @@
-import java.util.Observable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ParkingLot extends Observable {
+public class ParkingLot {
 
     public static final String CAR_OBJECT_IS_NULL = "Car not present";
     private final int PARKING_LOT_FULL = -1;
 
     private final int parkingLotSize;
-    private final Car parkingSlots[];
-
-    private boolean isParkingFull = false;
+    private final Car parkedCars[];
+    private final List<PersonObserver> personObserverList;
+    private final List<AgentObserver> agentObserverList;
 
     public ParkingLot(int parkingLotSize) throws Exception {
         validateParkingLotSize(parkingLotSize);
         this.parkingLotSize = parkingLotSize;
-        parkingSlots = new Car[parkingLotSize];
+        parkedCars = new Car[parkingLotSize];
+        personObserverList = new ArrayList<PersonObserver>();
+        agentObserverList = new ArrayList<AgentObserver>();
     }
 
     private void validateParkingLotSize(int parkingLotSize) throws Exception {
@@ -22,51 +25,88 @@ public class ParkingLot extends Observable {
         }
     }
 
-    public void addParkingOwnerAsObserver(ParkingOwner parkingOwner) throws Exception {
-        validateParkingOwner(parkingOwner);
-        addObserver(parkingOwner);
+    public void addPersonAsObserver(PersonObserver person) throws Exception {
+        validatePerson(person);
+        personObserverList.add(person);
     }
 
-    private void validateParkingOwner(ParkingOwner parkingOwner) throws Exception {
-        if (parkingOwner == null) {
-            throw new Exception("Cannot add parking owner as owner is not present");
+    private void validatePerson(Object person) throws Exception {
+        if (person == null) {
+            throw new Exception("Cannot add Person as Observer as person is not present");
         }
     }
 
     public int parkCar(Car car) throws Exception {
         validateCarForNull(car);
-        validateIfSameCarISAlreadyParked(car);
-        if (isParkingFull) {
+        validateIfSameCarIsAlreadyParked(car);
+        if (isParkingFull()) {
             throw new Exception("Parking Lot is full");
         }
         int parkingSlotIndex = findEmptyParkingSlot();
-        parkingSlots[parkingSlotIndex] = car;
-        checkAndNotifyForFullParkingSpace();
+        parkedCars[parkingSlotIndex] = car;
+        notifyForPerson();
+        notifyForAgent();
         return parkingSlotIndex;
     }
 
-    private void validateIfSameCarISAlreadyParked(Car car) throws Exception {
+    public int getNumberOfFreeParkingLots() {
+        int freeParkingLots =  0;
+        for(int i = 0; i < parkingLotSize; i++){
+            if(parkedCars[i] == null) {
+                freeParkingLots++;
+            }
+        }
+        return freeParkingLots;
+    }
+
+    private void notifyForAgent() {
+        if(isParking80PercentFull()) {
+            notifyFor80PercentFull();
+        }
+    }
+
+    private boolean isParking80PercentFull() {
+        int numberOfFreeParkingLots = getNumberOfFreeParkingLots();
+        return (numberOfFreeParkingLots * 1.0 / parkingLotSize) <= 0.2;
+    }
+
+    private void notifyFor80PercentFull() {
+        for (AgentObserver agentObserver : agentObserverList) {
+            agentObserver.updateWhenParkingLotIs80PercentFull();
+        }
+    }
+
+    private void notifyForPerson() throws Exception {
+        if (isParkingFull()) {
+            notifyForFullParkingSpace();
+            return;
+        }
+        notifyForFreeParkingSpace();
+    }
+
+    private void notifyForFullParkingSpace() throws Exception {
+        for (PersonObserver personObserver : personObserverList) {
+            personObserver.updateWhenParkingLotIsFull();
+        }
+    }
+
+    private void notifyForFreeParkingSpace() {
+        for (PersonObserver personObserver : personObserverList) {
+            personObserver.updateWhenParkingLotIsAvailable();
+        }
+    }
+
+    public boolean isParkingFull() {
+        int freeParkingLots = getNumberOfFreeParkingLots();
+        return freeParkingLots == 0;
+    }
+
+    private void validateIfSameCarIsAlreadyParked(Car car) throws Exception {
         for (int i = 0; i < parkingLotSize; i++) {
-            if (parkingSlots[i] == car) {
+            if (parkedCars[i] == car) {
                 throw new Exception("Same Car is Already Parked");
             }
         }
-    }
-
-    private void checkAndNotifyForFullParkingSpace() throws Exception {
-        for (int i = 0; i < parkingLotSize; i++) {
-            if (parkingSlots[i] == null) {
-                return;
-            }
-        }
-        isParkingFull = true;
-        notifyParkingOwnerForFullParking();
-
-    }
-
-    private void notifyParkingOwnerForFullParking() {
-        setChanged();
-        notifyObservers(true);
     }
 
     private void validateCarForNull(Car car) {
@@ -77,37 +117,23 @@ public class ParkingLot extends Observable {
 
     private int findEmptyParkingSlot() {
         for (int i = 0; i < parkingLotSize; i++) {
-            if (parkingSlots[i] == null) {
+            if (parkedCars[i] == null) {
                 return i;
             }
         }
-
         return PARKING_LOT_FULL;
     }
 
-
     public Car retrieveParkedCarForTicket(int parkingTicketNumber) throws Exception {
         checkForInvalidTicketNumber(parkingTicketNumber);
-        Car car = checkAndNotifyForFreeParkingSlot(parkingTicketNumber);
+        Car car = parkedCars[parkingTicketNumber];
         if (car == null) {
             throw new Exception("Car not Found");
         }
+        parkedCars[parkingTicketNumber] = null;
+        notifyForFreeParkingSpace();
+        notifyFor80PercentFull();
         return car;
-    }
-
-    private Car checkAndNotifyForFreeParkingSlot(int parkingTicketNumber) {
-        Car car = parkingSlots[parkingTicketNumber];
-        if (car != null) {
-            parkingSlots[parkingTicketNumber] = null;
-            isParkingFull = false;
-            notifyParkingOwnerForAvailableParking();
-        }
-        return car;
-    }
-
-    private void notifyParkingOwnerForAvailableParking() {
-        setChanged();
-        notifyObservers(false);
     }
 
     private void checkForInvalidTicketNumber(int parkingTicketNumber) throws Exception {
@@ -116,5 +142,7 @@ public class ParkingLot extends Observable {
         }
     }
 
-
+    public void addAgentObserver(AgentObserver agentObserver) {
+        agentObserverList.add(agentObserver);
+    }
 }

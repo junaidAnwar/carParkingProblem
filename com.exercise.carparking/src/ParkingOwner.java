@@ -1,33 +1,12 @@
-import java.util.Observable;
-import java.util.Observer;
-
-public class ParkingOwner implements Observer {
-
-    private boolean parkingFull;
+public class ParkingOwner implements PersonObserver {
 
     @Override
-    public void update(Observable o, Object arg) {
-
-        Boolean isParkingSpaceFull = (Boolean) arg;
-        if (isParkingSpaceFull) {
-            showFullSign();
-            return;
-        }
-        removeFullSign();
+    public void updateWhenParkingLotIsFull() {
 
     }
 
-    private void removeFullSign() {
-        parkingFull = false;
-    }
+    @Override
+    public void updateWhenParkingLotIsAvailable() {
 
-
-    private void showFullSign() {
-        parkingFull = true;
-    }
-
-    public boolean isParkingFull() {
-
-        return parkingFull;
     }
 }
