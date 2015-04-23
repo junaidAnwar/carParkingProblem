@@ -13,19 +13,6 @@ public class TravellerTest {
     }
 
     @Test
-     public void shouldNotParkCarWhenNoCar() throws Exception {
-        String outputException=null;
-        try {
-            Traveller traveller =new Traveller(null);
-            ParkingLot parkingLot = new ParkingLot(1);
-            traveller.parkCar(parkingLot);
-        } catch (Exception e) {
-            outputException=e.getMessage();
-        }
-        assertEquals("Car not present", outputException);
-    }
-
-    @Test
      public void shouldNotParkCarWhenCarIsAlreadyParked() throws Exception {
         String outputException=null;
         try {
@@ -46,7 +33,7 @@ public class TravellerTest {
         ParkingLot parkingLot = new ParkingLot(1);
         traveller.parkCar(parkingLot);
         String successMsg = traveller.retrieveParkedCar(parkingLot);
-        assertEquals("Car is unparked", successMsg);
+        assertEquals("Car is retrieved", successMsg);
 
     }
 

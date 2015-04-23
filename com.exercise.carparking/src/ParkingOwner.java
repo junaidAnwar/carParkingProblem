@@ -8,13 +8,13 @@ public class ParkingOwner implements Observer {
     @Override
     public void update(Observable o, Object arg) {
 
-        Boolean isParkingSpaceFull =(Boolean)arg;
-        if(isParkingSpaceFull) {
+        Boolean isParkingSpaceFull = (Boolean) arg;
+        if (isParkingSpaceFull) {
             showFullSign();
             return;
         }
         removeFullSign();
-        
+
     }
 
     private void removeFullSign() {
@@ -22,7 +22,7 @@ public class ParkingOwner implements Observer {
     }
 
 
-    private void showFullSign(){
+    private void showFullSign() {
         parkingFull = true;
     }
 

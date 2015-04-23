@@ -59,6 +59,19 @@ public class ParkingLotTest {
 
     }
 
+    @Test
+    public void shouldNotParkCarWhenSameCarIsParked() throws Exception {
+        try {
+            ParkingOwner parkingOwner = new ParkingOwner();
+            ParkingLot parkingLot = new ParkingLot(2);
+            Car car = new Car();
+            int parkingTicketNumber = parkingLot.parkCar(car);
+            int parkingTicketNumber1 = parkingLot.parkCar(car);
+        }
+        catch(Exception e) {
+            assertEquals("Same Car is Already Parked", e.getMessage());
+        }
+    }
 
     @Test
     public void shouldNotParkCarWhenParkingSpaceIsNotAvailable() throws Exception {
@@ -109,8 +122,8 @@ public class ParkingLotTest {
         ParkingOwner parkingOwner = new ParkingOwner();
         ParkingLot parkingLot = new ParkingLot(1);
         int parkingSlotA = parkingLot.parkCar(carA);
-        boolean isCarRetrieved = parkingLot.retrieveParkedCarForTicket(parkingSlotA);
-        assertTrue(isCarRetrieved);
+        Car carRetrieved = parkingLot.retrieveParkedCarForTicket(parkingSlotA);
+        assertTrue(carA == carRetrieved);
     }
 
     @Test
@@ -146,12 +159,15 @@ public class ParkingLotTest {
 
     @Test
     public void shouldNotRetrieveTheCarForEmptyParkingSpace() throws Exception {
-        ParkingOwner parkingOwner = new ParkingOwner();
-        ParkingLot parkingLot = new ParkingLot(1);
-        int parkingSlotA = 0;
-        boolean result = parkingLot.retrieveParkedCarForTicket(parkingSlotA);
-        assertFalse(result);
-
+        try {
+            ParkingOwner parkingOwner = new ParkingOwner();
+            ParkingLot parkingLot = new ParkingLot(1);
+            int parkingSlotA = 0;
+            parkingLot.retrieveParkedCarForTicket(parkingSlotA);
+        }
+        catch (Exception e) {
+            assertEquals("Car not Found", e.getMessage());
+        }
     }
 
 
