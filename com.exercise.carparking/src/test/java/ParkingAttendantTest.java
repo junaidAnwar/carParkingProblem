@@ -30,7 +30,7 @@ public class ParkingAttendantTest {
     }
 
     @Test
-      public void shouldParkCarAtFirstParkingLot() throws Exception {
+    public void shouldParkCarAtFirstParkingLot() throws Exception {
         Car car = new Car("");
         Ticket ticket = parkingAttendant.parkCar(car);
         int parkingLotNumber = ticket.getParkingLotNumber();
@@ -78,6 +78,13 @@ public class ParkingAttendantTest {
         } catch (Exception e) {
             assertEquals("All parking lots are full.", e.getMessage());
         }
+    }
+
+    @Test
+    public void shouldReturnValidParkingTimeForParkedCars() throws Exception {
+        Car car = new Car("");
+        Ticket ticket = parkingAttendant.parkCar(car);
+        assertNotNull(ticket.getParkingTime());
     }
 
 }

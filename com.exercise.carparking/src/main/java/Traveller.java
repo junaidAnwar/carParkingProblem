@@ -33,4 +33,6 @@ public class Traveller {
         }
         return CAR_IS_NOT_PARKED;
     }
+
+
 }

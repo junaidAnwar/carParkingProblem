@@ -1,3 +1,4 @@
+import java.util.Date;
 import java.util.List;
 
 public class ParkingAttendant {
@@ -18,7 +19,8 @@ public class ParkingAttendant {
         ParkingLot parkingLot = parkingStrategy.getFreeParkingLot(parkingLotList,"");
         int ticketNumber = parkingLot.parkCar(car);
         int parkingLotNumber = parkingLotList.indexOf(parkingLot);
-        ticket = new Ticket(parkingLotNumber, ticketNumber);
+        String parkingTime= new Date().toString();
+        ticket = new Ticket(parkingLotNumber, ticketNumber, parkingTime);
         return ticket;
     }
 
