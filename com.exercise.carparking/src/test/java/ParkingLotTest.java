@@ -211,4 +211,16 @@ public class ParkingLotTest {
         }
     }
 
+
+    @Test(expected=Exception.class)
+    public void shouldSendNotificationToFBIAgentWhenCarNotFound() throws Exception {
+        ParkingLot parkingLot = new ParkingLot(1);
+        FBIAgent agent = mock(FBIAgent.class);
+
+        parkingLot.addAgentObserver(agent);
+        parkingLot.retrieveParkedCarForTicket(0);
+
+        verify(agent).handleUpdateForCarNotFound();
+    }
+
 }

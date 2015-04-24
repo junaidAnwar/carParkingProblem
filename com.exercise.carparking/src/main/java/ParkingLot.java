@@ -83,6 +83,12 @@ public class ParkingLot {
     }
 
 
+    private void notifyForMissingCar() {
+        for (AgentObserver agentObserver : agentObserverList) {
+            agentObserver.handleUpdateForCarNotFound();
+        }
+    }
+
     private void notifyForPerson() throws Exception {
         if (isParkingFull()) {
             notifyForFullParkingSpace();
@@ -134,21 +140,27 @@ public class ParkingLot {
     public Car retrieveParkedCarForTicket(int parkingTicketNumber) throws Exception {
         checkForInvalidTicketNumber(parkingTicketNumber);
         Car car = parkedCars[parkingTicketNumber];
-        if (car == null) {
-            throw new Exception("Car not Found");
-        }
+        notifyAndThrowExceptionForCarNotFound(car);
+
         boolean isParking80PercentFullBeforeCarRetrieval = isParking80PercentFull();
+
         parkedCars[parkingTicketNumber] = null;
         boolean isParking80PercentFullAfterCarRetrieval = isParking80PercentFull();
         notifyForFreeParkingSpace();
         if(isParking80PercentFullBeforeCarRetrieval && !isParking80PercentFullAfterCarRetrieval) {
             notifyForLessThan80PercentFull();
         }
+        notifyFor80PercentFull();
 
         return car;
     }
 
-
+    private void notifyAndThrowExceptionForCarNotFound(Car car) throws Exception {
+        if (car == null) {
+            notifyForMissingCar();
+            throw new Exception("Car not Found");
+        }
+    }
 
     private void checkForInvalidTicketNumber(int parkingTicketNumber) throws Exception {
         if (parkingTicketNumber < 0 || parkingTicketNumber >= parkingLotSize) {
