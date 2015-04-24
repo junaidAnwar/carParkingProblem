@@ -38,7 +38,7 @@ public class FestiveSeasonParkingStrategyTest {
         parkingLotsList.add(parkingLotB);
         parkingLotsList.add(parkingLotC);
 
-        ParkingLot parkingLot = festiveSeasonParkingStrategy.getFreeParkingLot(parkingLotsList);
+        ParkingLot parkingLot = festiveSeasonParkingStrategy.getFreeParkingLot(parkingLotsList,"");
         assertSame(parkingLotC, parkingLot);
     }
 
@@ -61,7 +61,7 @@ public class FestiveSeasonParkingStrategyTest {
         parkingLotsList.add(parkingLotB);
         parkingLotsList.add(parkingLotC);
 
-        ParkingLot parkingLot = festiveSeasonParkingStrategy.getFreeParkingLot(parkingLotsList);
+        ParkingLot parkingLot = festiveSeasonParkingStrategy.getFreeParkingLot(parkingLotsList,"");
         assertSame(parkingLotC, parkingLot);
     }
 
@@ -80,6 +80,6 @@ public class FestiveSeasonParkingStrategyTest {
         parkingLotsList = new ArrayList<ParkingLot>();
         parkingLotsList.add(parkingLotA);
         parkingLotsList.add(parkingLotB);
-        festiveSeasonParkingStrategy.getFreeParkingLot(parkingLotsList);
+        festiveSeasonParkingStrategy.getFreeParkingLot(parkingLotsList,"");
     }
 }

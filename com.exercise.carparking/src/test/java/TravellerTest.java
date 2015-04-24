@@ -22,7 +22,7 @@ public class TravellerTest {
 
     @Test
     public void shouldParkCar() throws Exception {
-        Traveller traveller =new Traveller(new Car());
+        Traveller traveller =new Traveller(new Car(""));
         String result = traveller.parkCar(parkingAttendant);
         assertEquals("Car is Parked", result);
     }
@@ -31,7 +31,7 @@ public class TravellerTest {
      public void shouldNotParkCarWhenCarIsAlreadyParked() throws Exception {
         String outputException=null;
         try {
-            Traveller traveller =new Traveller(new Car());
+            Traveller traveller =new Traveller(new Car(""));
             traveller.parkCar(parkingAttendant);
             traveller.parkCar(parkingAttendant);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class TravellerTest {
 
     @Test
     public void shouldRetrieveCarWhenCarIsParked() throws Exception {
-        Traveller traveller =new Traveller(new Car());
+        Traveller traveller =new Traveller(new Car(""));
         traveller.parkCar(parkingAttendant);
         String successMsg = traveller.retrieveParkedCar(parkingAttendant);
         assertEquals("Car is retrieved", successMsg);
@@ -52,7 +52,7 @@ public class TravellerTest {
 
     @Test
     public void shouldNotRetrieveCarWhenCarIsNotParked() throws Exception {
-        Traveller traveller =new Traveller(new Car());
+        Traveller traveller =new Traveller(new Car(""));
         String successMsg = traveller.retrieveParkedCar(parkingAttendant);
         assertEquals("Car is not parked", successMsg);
 
@@ -60,7 +60,7 @@ public class TravellerTest {
 
     @Test
     public void shouldParkCarAfterRetrievingCar() throws Exception {
-        Traveller traveller =new Traveller(new Car());
+        Traveller traveller =new Traveller(new Car(""));
         traveller.parkCar(parkingAttendant);
         traveller.retrieveParkedCar(parkingAttendant);
         String successMsg = traveller.parkCar(parkingAttendant);

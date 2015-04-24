@@ -15,7 +15,7 @@ public class ParkingAttendant {
     public Ticket parkCar(Car car) throws Exception {
         Ticket ticket;
         ParkingStrategy parkingStrategy = ParkingLotOwner.getParkingStrategy();
-        ParkingLot parkingLot = parkingStrategy.getFreeParkingLot(parkingLotList);
+        ParkingLot parkingLot = parkingStrategy.getFreeParkingLot(parkingLotList,"");
         int ticketNumber = parkingLot.parkCar(car);
         int parkingLotNumber = parkingLotList.indexOf(parkingLot);
         ticket = new Ticket(parkingLotNumber, ticketNumber);

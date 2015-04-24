@@ -2,7 +2,7 @@ import java.util.List;
 
 public class FestiveSeasonParkingStrategy implements ParkingStrategy {
     @Override
-    public ParkingLot getFreeParkingLot(List<ParkingLot> parkingLotList) throws Exception {
+    public ParkingLot getFreeParkingLot(List<ParkingLot> parkingLotList, String carSize) throws Exception {
         isValidParkingLotList(parkingLotList);
         ParkingLot parkingLotWithMaximumSize = parkingLotList.get(0);
         for (ParkingLot parkingLot : parkingLotList) {

@@ -30,7 +30,7 @@ public class ParkingLotTest {
 
     @Test
     public void shouldParkCarWhenParkingSpaceIsAvailable() throws Exception {
-        Car car = new Car();
+        Car car = new Car("");
         ParkingLot parkingLot = new ParkingLot(1);
         int parkingTicketNumber = parkingLot.parkCar(car);
         boolean isValidParkingTicket = parkingTicketNumber >= 0;
@@ -54,7 +54,7 @@ public class ParkingLotTest {
     public void shouldNotParkCarWhenSameCarIsParked() throws Exception {
         try {
             ParkingLot parkingLot = new ParkingLot(2);
-            Car car = new Car();
+            Car car = new Car("");
             int parkingTicketNumber = parkingLot.parkCar(car);
             int parkingTicketNumber1 = parkingLot.parkCar(car);
         }
@@ -67,8 +67,8 @@ public class ParkingLotTest {
     public void shouldNotParkCarWhenParkingSpaceIsNotAvailable() throws Exception {
         String exceptionMsg = null;
         try {
-            Car carA = new Car();
-            Car carB = new Car();
+            Car carA = new Car("");
+            Car carB = new Car("");
             ParkingLot parkingLot = new ParkingLot(1);
             parkingLot.parkCar(carA);
             parkingLot.parkCar(carB);
@@ -81,8 +81,8 @@ public class ParkingLotTest {
 
     @Test
     public void shouldNotParkCarAtSameSlotWhenAnotherCarIsAlreadyParked() throws Exception {
-        Car carA = new Car();
-        Car carB = new Car();
+        Car carA = new Car("");
+        Car carB = new Car("");
         ParkingLot parkingLot = new ParkingLot(2);
         int tokenA = parkingLot.parkCar(carA);
         int tokenB = parkingLot.parkCar(carB);
@@ -91,7 +91,7 @@ public class ParkingLotTest {
 
     @Test
     public void shouldRetrieveTheParkedCarForTheAssignedTicket() throws Exception {
-        Car carA = new Car();
+        Car carA = new Car("");
         ParkingLot parkingLot = new ParkingLot(1);
         int ticket = parkingLot.parkCar(carA);
         Car carRetrieved = parkingLot.retrieveParkedCarForTicket(ticket);
@@ -114,7 +114,7 @@ public class ParkingLotTest {
 
     @Test
     public void shouldNotifyOnlyParkingLotOwnerObserverWhenParkingSpaceIsFull() throws Exception {
-        Car carA = new Car();
+        Car carA = new Car("");
         ParkingLot parkingLot = new ParkingLot(1);
         PersonObserver personObserver = mock(PersonObserver.class);
         parkingLot.addPersonAsObserver(personObserver);
@@ -125,7 +125,7 @@ public class ParkingLotTest {
 
     @Test
     public void shouldNotifyParkingLotOwnerObserverWhenParkingSpaceIsAvailable() throws Exception {
-        Car carA = new Car();
+        Car carA = new Car("");
         ParkingLot parkingLot = new ParkingLot(1);
         PersonObserver personObserver = mock(PersonObserver.class);
         parkingLot.addPersonAsObserver(personObserver);
@@ -140,10 +140,10 @@ public class ParkingLotTest {
         AgentObserver agentObserver = mock(AgentObserver.class);
         parkingLot.addAgentObserver(agentObserver);
 
-        parkingLot.parkCar(new Car());
-        parkingLot.parkCar(new Car());
-        parkingLot.parkCar(new Car());
-        parkingLot.parkCar(new Car());
+        parkingLot.parkCar(new Car(""));
+        parkingLot.parkCar(new Car(""));
+        parkingLot.parkCar(new Car(""));
+        parkingLot.parkCar(new Car(""));
        verify(agentObserver).updateWhenParkingLotIs80PercentFull();
     }
 
@@ -153,9 +153,9 @@ public class ParkingLotTest {
         AgentObserver agentObserver = mock(AgentObserver.class);
         parkingLot.addAgentObserver(agentObserver);
 
-        parkingLot.parkCar(new Car());
-        parkingLot.parkCar(new Car());
-        parkingLot.parkCar(new Car());
+        parkingLot.parkCar(new Car(""));
+        parkingLot.parkCar(new Car(""));
+        parkingLot.parkCar(new Car(""));
         verify(agentObserver,never()).updateWhenParkingLotIs80PercentFull();
     }
 
@@ -166,10 +166,10 @@ public class ParkingLotTest {
         ParkingLot parkingLot = new ParkingLot(5);
         AgentObserver agentObserver = mock(AgentObserver.class);
         parkingLot.addAgentObserver(agentObserver);
-        parkingLot.parkCar(new Car());
-        parkingLot.parkCar(new Car());
-        parkingLot.parkCar(new Car());
-        int ticket = parkingLot.parkCar(new Car());
+        parkingLot.parkCar(new Car(""));
+        parkingLot.parkCar(new Car(""));
+        parkingLot.parkCar(new Car(""));
+        int ticket = parkingLot.parkCar(new Car(""));
         parkingLot.retrieveParkedCarForTicket(ticket);
         verify(agentObserver, times(1)).updateWhenParkingLotIsNoLonger80PercentFull();
     }
@@ -179,9 +179,9 @@ public class ParkingLotTest {
         ParkingLot parkingLot = new ParkingLot(5);
         AgentObserver agentObserver = mock(AgentObserver.class);
         parkingLot.addAgentObserver(agentObserver);
-        parkingLot.parkCar(new Car());
-        parkingLot.parkCar(new Car());
-        int ticket = parkingLot.parkCar(new Car());
+        parkingLot.parkCar(new Car(""));
+        parkingLot.parkCar(new Car(""));
+        int ticket = parkingLot.parkCar(new Car(""));
         parkingLot.retrieveParkedCarForTicket(ticket);
         verify(agentObserver, times(0)).updateWhenParkingLotIsNoLonger80PercentFull();
     }
@@ -191,11 +191,11 @@ public class ParkingLotTest {
         ParkingLot parkingLot = new ParkingLot(5);
         AgentObserver agentObserver = mock(AgentObserver.class);
         parkingLot.addAgentObserver(agentObserver);
-        parkingLot.parkCar(new Car());
-        parkingLot.parkCar(new Car());
-        parkingLot.parkCar(new Car());
-        parkingLot.parkCar(new Car());
-        int ticket = parkingLot.parkCar(new Car());
+        parkingLot.parkCar(new Car(""));
+        parkingLot.parkCar(new Car(""));
+        parkingLot.parkCar(new Car(""));
+        parkingLot.parkCar(new Car(""));
+        int ticket = parkingLot.parkCar(new Car(""));
         parkingLot.retrieveParkedCarForTicket(ticket);
         verify(agentObserver, times(0)).updateWhenParkingLotIsNoLonger80PercentFull();
     }
