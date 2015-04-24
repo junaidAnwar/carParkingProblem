@@ -19,6 +19,10 @@ public class ParkingLot {
         agentObserverList = new ArrayList<AgentObserver>();
     }
 
+    public int getParkingLotSize() {
+        return parkingLotSize;
+    }
+
     private void validateParkingLotSize(int parkingLotSize) throws Exception {
         if (parkingLotSize <= 0) {
             throw new Exception("Cannot create parking lot with no space");
