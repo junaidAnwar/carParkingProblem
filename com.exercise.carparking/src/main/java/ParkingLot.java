@@ -10,6 +10,7 @@ public class ParkingLot {
     private final Car parkedCars[];
     private final List<PersonObserver> personObserverList;
     private final List<AgentObserver> agentObserverList;
+    private final List<MissingCarObserver> missingCarObserverList;
 
     public ParkingLot(int parkingLotSize) throws Exception {
         validateParkingLotSize(parkingLotSize);
@@ -17,6 +18,7 @@ public class ParkingLot {
         parkedCars = new Car[parkingLotSize];
         personObserverList = new ArrayList<PersonObserver>();
         agentObserverList = new ArrayList<AgentObserver>();
+        missingCarObserverList = new ArrayList<MissingCarObserver>();
     }
 
     private void validateParkingLotSize(int parkingLotSize) throws Exception {
@@ -84,8 +86,8 @@ public class ParkingLot {
 
 
     private void notifyForMissingCar() {
-        for (AgentObserver agentObserver : agentObserverList) {
-            agentObserver.handleUpdateForCarNotFound();
+        for (MissingCarObserver missingCarObserver : missingCarObserverList) {
+            missingCarObserver.handleUpdateForCarNotFound();
         }
     }
 
@@ -170,7 +172,17 @@ public class ParkingLot {
         }
     }
 
-    public void addAgentObserver(AgentObserver agentObserver) {
+    public void addAgentObserver(AgentObserver agentObserver) throws Exception {
+        if(agentObserver == null){
+            throw new Exception("AgentObserver is not present");
+        }
         agentObserverList.add(agentObserver);
+    }
+
+    public void addMissingCarObserver(MissingCarObserver observer) throws Exception {
+        if(observer == null){
+            throw new Exception("Missing Car Observer is not present");
+        }
+        missingCarObserverList.add(observer);
     }
 }

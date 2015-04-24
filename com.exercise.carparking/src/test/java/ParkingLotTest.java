@@ -211,16 +211,39 @@ public class ParkingLotTest {
         }
     }
 
+    @Test(expected = Exception.class)
+    public void shouldNotAddAgentObserverWhenThrerIsNoAgent() throws Exception {
+        ParkingLot parkingLot = new ParkingLot(1);
+        parkingLot.addAgentObserver(null);
+    }
+
 
     @Test(expected=Exception.class)
     public void shouldSendNotificationToFBIAgentWhenCarNotFound() throws Exception {
         ParkingLot parkingLot = new ParkingLot(1);
         FBIAgent agent = mock(FBIAgent.class);
 
-        parkingLot.addAgentObserver(agent);
+        parkingLot.addMissingCarObserver(agent);
         parkingLot.retrieveParkedCarForTicket(0);
 
         verify(agent).handleUpdateForCarNotFound();
+    }
+
+    @Test(expected = Exception.class)
+    public void shouldNotAddMissingCarObserverIfThereIsNoObserver() throws Exception {
+        ParkingLot parkingLot = new ParkingLot(1);
+        parkingLot.addMissingCarObserver(null);
+    }
+
+    @Test(expected = Exception.class)
+    public void shouldSendNotificationToPoliceDepartmentWhenCarNotFound() throws Exception {
+        ParkingLot parkingLot = new ParkingLot(1);
+        PoliceDepartment policeDepartment = mock(PoliceDepartment.class);
+
+        parkingLot.addMissingCarObserver(policeDepartment);
+        parkingLot.retrieveParkedCarForTicket(0);
+
+        verify(policeDepartment).handleUpdateForCarNotFound();
     }
 
 }
