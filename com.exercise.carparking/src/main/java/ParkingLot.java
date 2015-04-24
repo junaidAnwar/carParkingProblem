@@ -141,7 +141,11 @@ public class ParkingLot {
         checkForInvalidTicketNumber(parkingTicketNumber);
         Car car = parkedCars[parkingTicketNumber];
         notifyAndThrowExceptionForCarNotFound(car);
+        unparkCarAndNotifyObserversForParkingLotOccupancy(parkingTicketNumber);
+        return car;
+    }
 
+    private void unparkCarAndNotifyObserversForParkingLotOccupancy(int parkingTicketNumber) {
         boolean isParking80PercentFullBeforeCarRetrieval = isParking80PercentFull();
 
         parkedCars[parkingTicketNumber] = null;
@@ -151,8 +155,6 @@ public class ParkingLot {
             notifyForLessThan80PercentFull();
         }
         notifyFor80PercentFull();
-
-        return car;
     }
 
     private void notifyAndThrowExceptionForCarNotFound(Car car) throws Exception {
