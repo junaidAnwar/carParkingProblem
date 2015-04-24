@@ -6,17 +6,15 @@ public class NormalSeasonParkingStrategy implements ParkingStrategy {
     @Override
     public ParkingLot getFreeParkingLot(List<ParkingLot> parkingLotList, String carSize) throws Exception {
         isValidParkingLotList(parkingLotList);
-        if(carSize ==null) {
+        if (carSize == null) {
             throw new Exception("Car size not present");
         }
-        switch (carSize.toLowerCase()) {
-            case "large": {
-                return getFreeParkingLotForLargeCar(parkingLotList);
-            }
-            default: {
-                return  getFreeParkingLotForNormalCar(parkingLotList);
-            }
+        if (carSize.equalsIgnoreCase("large")) {
+            return getFreeParkingLotForLargeCar(parkingLotList);
         }
+        return getFreeParkingLotForNormalCar(parkingLotList);
+
+
     }
 
     private ParkingLot getFreeParkingLotForNormalCar(List<ParkingLot> parkingLotList) throws Exception {
