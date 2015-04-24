@@ -159,8 +159,10 @@ public class ParkingLotTest {
         verify(agentObserver,never()).updateWhenParkingLotIs80PercentFull();
     }
 
+
+
     @Test
-    public void shouldNotifyAgentObserverAsSoonAsParkingSpaceIs80PercentFull() throws Exception {
+    public void shouldNotifyAgentObserverAsSoonAsParkingSpaceIsNoLonger80PercentFull() throws Exception {
         ParkingLot parkingLot = new ParkingLot(5);
         AgentObserver agentObserver = mock(AgentObserver.class);
         parkingLot.addAgentObserver(agentObserver);
@@ -169,7 +171,19 @@ public class ParkingLotTest {
         parkingLot.parkCar(new Car());
         int ticket = parkingLot.parkCar(new Car());
         parkingLot.retrieveParkedCarForTicket(ticket);
-        verify(agentObserver, times(2)).updateWhenParkingLotIs80PercentFull();
+        verify(agentObserver, times(1)).updateWhenParkingLotIsNoLonger80PercentFull();
+    }
+
+    @Test
+    public void shouldNotNotifyAgentObserverIfParkingSpaceWasNot80PercentFullBeforeCarRetrieval() throws Exception {
+        ParkingLot parkingLot = new ParkingLot(5);
+        AgentObserver agentObserver = mock(AgentObserver.class);
+        parkingLot.addAgentObserver(agentObserver);
+        parkingLot.parkCar(new Car());
+        parkingLot.parkCar(new Car());
+        int ticket = parkingLot.parkCar(new Car());
+        parkingLot.retrieveParkedCarForTicket(ticket);
+        verify(agentObserver, times(0)).updateWhenParkingLotIsNoLonger80PercentFull();
     }
 
     @Test

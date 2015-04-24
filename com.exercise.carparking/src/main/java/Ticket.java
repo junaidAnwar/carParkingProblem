@@ -1,6 +1,4 @@
-/**
- * Created by Junaid on 23-04-2015.
- */
+
 public class Ticket {
     private int parkingLotNumber;
     private int ticketNumber;

@@ -1,5 +1,4 @@
 public class Traveller {
-    private static final String CAR_OBJECT_IS_NULL = "Car not present";
     private static final String CAR_IS_ALREADY_PARKED = "Car is already Parked!";
     private static final String CAR_IS_RETRIEVED = "Car is retrieved";
     private static final String CAR_IS_NOT_PARKED = "Car is not parked";

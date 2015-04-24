@@ -4,4 +4,9 @@ public class FBIAgent implements AgentObserver {
     public void updateWhenParkingLotIs80PercentFull() {
 
     }
+
+    @Override
+    public void updateWhenParkingLotIsNoLonger80PercentFull() {
+
+    }
 }
